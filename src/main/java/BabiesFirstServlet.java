@@ -14,6 +14,5 @@ public class BabiesFirstServlet extends HttpServlet {
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
-
     }
 }
