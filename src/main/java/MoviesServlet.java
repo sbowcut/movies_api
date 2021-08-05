@@ -1,11 +1,14 @@
 import com.google.gson.Gson;
+import data.DaoFactory;
 import data.Movie;
+import data.MoviesDao;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 
 @WebServlet(name = "MoviesServlet", urlPatterns = "/movies")
@@ -19,12 +22,15 @@ public class MoviesServlet extends HttpServlet {
             //get object which can write to the response
             PrintWriter out = response.getWriter();
 
-            //eventually get movies from the database
-            Movie movie = new Movie(2, "King King", "1942", "Harry Carey",
-                    "Elsa Banks", "234234234", "there aint one", "cheap",
-                    "Big Chungus Monkey");
+
+//            Movie movie = new Movie(2, "King King", "1942", "Harry Carey",
+//                    "Elsa Banks", "234234234", "there aint one", "cheap",
+//                    "Big Chungus Monkey");
+
+            //get movies from the database
+            MoviesDao moviesDao = DaoFactory.getMoviesDao(DaoFactory.ImplType.IN_MEMORY);
             //turn into json string
-            String movieString = new Gson().toJson(movie);
+            String movieString = new Gson().toJson(moviesDao.all());
 
             //object into response
             out.println(movieString);
@@ -45,9 +51,9 @@ public class MoviesServlet extends HttpServlet {
 
           //get the stream of characters from the request
           BufferedReader reader = request.getReader();
-
-          //turn stream into an array of movies
           Movie[] movies = new Gson().fromJson(reader, Movie[].class);
+          //turn stream into an array of movies
+          DaoFactory.getMoviesDao(DaoFactory.ImplType.IN_MEMORY).insertAll(movies);
 
           //sout out properties for each movie so we know they made it
           for(Movie movie : movies){
@@ -102,8 +108,11 @@ public class MoviesServlet extends HttpServlet {
             }
 
 
-        }catch(Exception ex){
-            System.out.println(ex.getMessage());
+        }catch (IOException e) {
+            out.println(new Gson().toJson(e.getLocalizedMessage()));
+            response.setStatus(500);
+            e.printStackTrace();
+            return;
         }
 
         //write a meaningful response and set status code to 200
