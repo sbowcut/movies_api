@@ -52,8 +52,9 @@ public class MoviesServlet extends HttpServlet {
           //get the stream of characters from the request
           BufferedReader reader = request.getReader();
           Movie[] movies = new Gson().fromJson(reader, Movie[].class);
+
           //turn stream into an array of movies
-          DaoFactory.getMoviesDao(DaoFactory.ImplType.IN_MEMORY).insertAll(movies);
+          DaoFactory.getMoviesDao(DaoFactory.ImplType.IN_MEMORY).insert(movies[0]);
 
           //sout out properties for each movie so we know they made it
           for(Movie movie : movies){
