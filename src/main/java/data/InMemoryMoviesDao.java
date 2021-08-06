@@ -37,7 +37,7 @@ public class InMemoryMoviesDao implements MoviesDao {
 
     @Override
     public void insertAll(Movie[] movies) throws SQLException {
-        moviesMap = getMovieMap(Arrays.asList(movies));
+        moviesMap = getMoviesMap(Arrays.asList(movies));
     }
 
     @Override
@@ -58,17 +58,20 @@ public class InMemoryMoviesDao implements MoviesDao {
         try {
             Reader reader = Files.newBufferedReader(Paths.get("/Users/sbowcut/IdeaProjects/movies_api/src/main/resources/movies.json"));
             Type type = TypeToken.getParameterized(ArrayList.class, Movie.class).getType();
-            return getMovieMap(new Gson().fromJson(reader, type));
+            return getMoviesMap(new Gson().fromJson(reader, type));
         } catch (IOException e) {
             System.out.println(e.getMessage());
             return null;
         }
     }
 
-    private HashMap<Integer, Movie> getMovieMap(List<Movie> movies) {
+    private HashMap<Integer, Movie> getMoviesMap(List<Movie> movies) {
         HashMap<Integer, Movie> movieHashMap = new HashMap<>();
+        int counter = 1;
         for (Movie movie : movies) {
-            movieHashMap.put(movie.getId(), movie);
+            movieHashMap.put(counter, movie);
+            movie.setId(counter);
+            counter ++;
         }
         return movieHashMap;
     }
