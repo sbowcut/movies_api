@@ -10,7 +10,9 @@ public class DaoFactory {
 
         switch(implementationType){
             case IN_MEMORY:{ //yet we have one switch case. We'll get to that!
-                moviesDao = new InMemoryMoviesDao();
+                if (moviesDao == null) {
+                    moviesDao = new InMemoryMoviesDao();
+                }
             }
         }
         return moviesDao;
