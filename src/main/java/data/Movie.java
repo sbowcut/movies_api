@@ -7,7 +7,7 @@ public class Movie {
     public String year;
     public String director;
     public String actors;
-    public String imdbID;
+    public String rating;
     public String poster;
     public String genre;
     public String plot;
@@ -22,7 +22,7 @@ public class Movie {
         this.year = year;
         this.director = director;
         this.actors = actors;
-        this.imdbID = imdbID;
+        this.rating = imdbID;
         this.poster = poster;
         this.genre = genre;
         this.plot = plot;
@@ -68,12 +68,12 @@ public class Movie {
         this.actors = actors;
     }
 
-    public String getImdbID() {
-        return imdbID;
+    public String getRating() {
+        return rating;
     }
 
-    public void setImdbID(String imdbID) {
-        this.imdbID = imdbID;
+    public void setRating(String rating) {
+        this.rating = rating;
     }
 
     public String getPoster() {
